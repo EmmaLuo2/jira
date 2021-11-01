@@ -2,6 +2,8 @@ import React from 'react';
 import { SearchPanel } from "./search-panel";
 import { List } from "./list";
 import { useState, useEffect } from "react";
+import qs from 'qs';
+import {cleanObject} from '../../utils';
 
 const apiUrl = process.env.REACT_APP_API_URL
 
@@ -12,10 +14,10 @@ export const ProjectListScreen = () => {
   const [param, setParam] = useState(0);
   const [list, setList] = useState([]);
   useEffect(()=>{
-    fetch(`${apiUrl}/projects`).then( async res=>{
+    fetch(`${apiUrl}/projects?${qs.stringify(cleanObject(param))}`).then( async res=>{
         // 使用list来装请求到的数据
         if(res.ok) {
-            setList(await res.json())
+          setList(await res.json())
         }
     })
   }, [param])
@@ -26,7 +28,7 @@ export const ProjectListScreen = () => {
             setUsers(await res.json())
         }
     })
-  }, [param])
+  }, [])
   return (
     
     <div>
