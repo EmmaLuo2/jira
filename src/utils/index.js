@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 export const isFalsy = (value) => (value === 0 ? false : !value);
 
 export const cleanObject = (object) => {
@@ -9,4 +11,33 @@ export const cleanObject = (object) => {
     }
   });
   return result;
+};
+
+// 页面存在很多渲染时就需要加载的东西
+//  注意，不管是自定义hook还是react的hook，都要以use开头
+export const useMount = (callback) => {
+  useEffect(() => {
+    callback();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+};
+
+// 自定义一个useDebounce
+export const useDebounce = (value, delay) => {
+  const [debounceValue, setDebounceValue] = useState(value);
+
+  // 每次value变化的时候都需要更新debounceValue的值（使用useEffect）
+  useEffect(() => {
+    console.log("1");
+    //  每次依赖项变化时都需要设定一个定时器
+    const timeout = setTimeout(() => setDebounceValue(value), delay);
+    // 每次在上一个useEffect处理完以后再运行
+    // ps 我觉得应该是在当前渲染之前和上次渲染完成之后再运行, 前提是一定要有当前渲染
+    return () => {
+      console.log("2");
+      clearTimeout(timeout);
+    };
+  }, [value, delay]);
+
+  return debounceValue;
 };
