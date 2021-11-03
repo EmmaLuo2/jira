@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 
-export const isFalsy = (value) => (value === 0 ? false : !value);
+export const isFalsy = (value: any) => (value === 0 ? false : !value);
 
-export const cleanObject = (object) => {
+export const cleanObject = (object: object) => {
   const result = { ...object };
   Object.keys(result).forEach((key) => {
+    // @ts-ignore
     const value = result[key];
     if (isFalsy(value)) {
+      // @ts-ignore
       delete result[key];
     }
   });
@@ -15,7 +17,7 @@ export const cleanObject = (object) => {
 
 // 页面存在很多渲染时就需要加载的东西
 //  注意，不管是自定义hook还是react的hook，都要以use开头
-export const useMount = (callback) => {
+export const useMount = (callback: () => void) => {
   useEffect(() => {
     callback();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -23,7 +25,7 @@ export const useMount = (callback) => {
 };
 
 // 自定义一个useDebounce
-export const useDebounce = (value, delay) => {
+export const useDebounce = (value: any, delay?: number) => {
   const [debounceValue, setDebounceValue] = useState(value);
 
   // 每次value变化的时候都需要更新debounceValue的值（使用useEffect）
