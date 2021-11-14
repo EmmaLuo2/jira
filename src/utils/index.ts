@@ -25,7 +25,7 @@ export const useMount = (callback: () => void) => {
 };
 
 // 自定义一个useDebounce
-export const useDebounce = (value: any, delay?: number) => {
+export const useDebounce = <V>(value: V, delay?: number) => {
   const [debounceValue, setDebounceValue] = useState(value);
 
   // 每次value变化的时候都需要更新debounceValue的值（使用useEffect）
